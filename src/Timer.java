@@ -14,13 +14,14 @@ public class Timer {
     public void tique(double dt) {
         if(fim) return;
         tempo += dt;
-        if(tempo > limite) {
-            acao.executa();
-            if(repete) {
-                tempo -= limite;
-            } else {
-                fim = true;
-            }
+        if(tempo <= limite) return;
+   
+        acao.executa();
+        if(repete) {
+            tempo -= limite;
+        } else {
+            fim = true;
         }
+    
     }
 }
