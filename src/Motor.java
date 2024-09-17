@@ -16,35 +16,39 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import javax.swing.Timer;
+
+import interfaces.Game;
+import utils.Shapes;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Canvas;
 
 /**
- * Motor do jogo, gerencia a parte gráfica e os eventos
+ * Motor do game, gerencia a parte gráfica e os eventos
  */
 public class Motor
 {
-    public Jogo jogo;
+    public Game game;
     public BufferStrategy strategy;
     public TreeSet<String> keySet = new TreeSet<String>();
     
-    public Motor(Jogo j) {
-        jogo = j;
+    public Motor(Game j) {
+        game = j;
         Canvas canvas = new Canvas();
-        JFrame container = new JFrame(jogo.getTitulo());
+        JFrame container = new JFrame(game.getTitle());
         JPanel panel = (JPanel) container.getContentPane();
         panel.setPreferredSize(new Dimension(
-                jogo.getLargura(), jogo.getAltura()));
+                game.getWidth(), game.getHeight()));
         panel.setLayout(null);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
         Rectangle bounds = gs[gs.length-1].getDefaultConfiguration().getBounds();
         container.setResizable(false);
-        container.setBounds(bounds.x+(bounds.width - jogo.getLargura())/2,
-                            bounds.y+(bounds.height - jogo.getAltura())/2,
-                            jogo.getLargura(),jogo.getAltura());
-        canvas.setBounds(0,0,jogo.getLargura(),jogo.getAltura());
+        container.setBounds(bounds.x+(bounds.width - game.getWidth())/2,
+                            bounds.y+(bounds.height - game.getHeight())/2,
+                            game.getWidth(),game.getHeight());
+        canvas.setBounds(0,0,game.getWidth(),game.getHeight());
         panel.add(canvas);        
         canvas.setIgnoreRepaint(true);
         container.pack();
@@ -65,7 +69,7 @@ public class Motor
             }
             @Override
             public void keyTyped(KeyEvent evt) {
-                jogo.tecla(keyString(evt));
+                game.key(keyString(evt));
             }
         });
         canvas.createBufferStrategy(2);
@@ -84,12 +88,12 @@ public class Motor
                 if(t1 > t0) {
                     double dt = (t1 - t0) / 1000.0;
                     t0 = t1;
-                    jogo.tique(keySet, dt);     
+                    game.tick(keySet, dt);     
                     Graphics2D g = (Graphics2D)strategy.getDrawGraphics();
                     g.setColor(Color.black);
-                    g.fillRect(0,0,jogo.getLargura(),
-                          jogo.getAltura());
-                    jogo.desenhar(new Tela(g));
+                    g.fillRect(0,0,game.getWidth(),
+                          game.getHeight());
+                    game.draw(new Shapes(g));
                     strategy.show();
                 }
             }

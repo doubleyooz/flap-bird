@@ -1,3 +1,4 @@
+package components;
 public class Hitbox {
     // Posições
     public static int TOPO     = 1;
@@ -26,7 +27,7 @@ public class Hitbox {
         }
     }
     
-    public void mover(double x0, double y0, double x1, double y1) {
+    public void move(double x0, double y0, double x1, double y1) {
         if(x0 < x1) {
             this.x0 = x0;
             this.x1 = x1;
@@ -43,7 +44,7 @@ public class Hitbox {
         }
     }
     
-    public void mover(double dx, double dy) {
+    public void move(double dx, double dy) {
         x0 += dx;
         x1 += dx;
         y0 += dy;
