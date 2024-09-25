@@ -138,7 +138,7 @@ public class Motor
         }
     }
 
-    public static void tocar(String filename) {
+    public static void sound(String filename) {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(new File(filename)));

@@ -21,7 +21,7 @@ public class Main implements Game{
 	public double gvx2 = 15; //velocidade do fudno
 	
 	private final int GAP = 112;
-
+	private boolean gameover = false;
 
 	public Bird bird;
 	public ArrayList<Pipe> pipes = new ArrayList<Pipe>();
@@ -50,39 +50,38 @@ public class Main implements Game{
 		timer_pipe = new Timer(3, true, addPipe()); // gera o pipes na ela
 		
 	}
-
-
 	
 	private Action addPipe() {
 		return new Action() {
+
 			public void run() {
 				pipes.add(new Pipe(MainScreen.GAME_HEIGHT, gerador.nextInt(MainScreen.GAME_HEIGHT - GAP  - Pipe.HOLESIZE), -gvx));
 			}
 		};
 	}
 	
-	
-   
-    
     public void key(String key) {
     	if (key.equals(" "))
     			bird.flap();
     }
 
     public void tick(java.util.Set<String> keys, double dt) {
+		if(gameover) return;
     	ground_offset += dt * gvx;
-    	ground_offset = ground_offset%308;
+    	ground_offset = ground_offset%MainScreen.GROUND_WIDTH;
     	
     	background_offset += dt * gvx2;
     	background_offset = background_offset%MainScreen.BG_WIDTH;
     	
     	timer_pipe.tick(dt);
     	
+		
     	bird.update(dt);
     	for (Pipe pipe: pipes) {
     		pipe.update(dt);
     		if (bird.box.intersecao(pipe.boxcima) != 0 || bird.box.intersecao(pipe.boxbaixo) != 0) {
     			System.out.println(MainScreen.GAME_OVER);
+				gameover = true;
     			//gameover
     		}
     	}
@@ -91,12 +90,11 @@ public class Main implements Game{
     		pipes.remove(0);
     		
     	}
-    	if (bird.y + 24 >= MainScreen.GAME_HEIGHT -GAP) {
+    	if (bird.y + 24 >= MainScreen.GAME_HEIGHT - GAP || bird.y <= 0 ) {
     		System.out.println(MainScreen.GAME_OVER);
+			gameover = true;
     	}
-    	else if (bird.y <= 0) {
-    		System.out.println(MainScreen.GAME_OVER);
-    	}
+  
     		
     }
     
@@ -111,15 +109,14 @@ public class Main implements Game{
     	}
     	
     	//ground
-    	t.image(Image.FLAPPY, 292, 0, 308, GAP, 0, -ground_offset, MainScreen.GAME_HEIGHT - GAP);
-    	t.image(Image.FLAPPY, 292, 0, 308, GAP, 0, 308 - ground_offset, MainScreen.GAME_HEIGHT - GAP);
-    	t.image(Image.FLAPPY, 292, 0, 308, GAP, 0, 308 * 2 - ground_offset, MainScreen.GAME_HEIGHT - GAP);
+    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, -ground_offset, MainScreen.GAME_HEIGHT - GAP);
+    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH - ground_offset, MainScreen.GAME_HEIGHT - GAP);
+    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH * 2 - ground_offset, MainScreen.GAME_HEIGHT - GAP);
     	
     	
     	bird.draw(t);
     }
 	
-    
 	public static void main(String[]args) {
 		new Motor (new Main());
 	}
