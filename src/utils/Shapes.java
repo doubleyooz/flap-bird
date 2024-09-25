@@ -85,17 +85,17 @@ public class Shapes
         text(text, (int)Math.round(x), (int)Math.round(y), tamanho, cor);
     }
     
-    public void image(String arquivo, int xa, int ya, int larg, int alt, double dir, double x, double y) {
-        if(!sprites.containsKey(arquivo)) {
+    public void image(String file, int xa, int ya, int larg, int alt, double dir, double x, double y) {
+        if(!sprites.containsKey(file)) {
             try {
-                sprites.put(arquivo, ImageIO.read(new File(arquivo)));
+                sprites.put(file, ImageIO.read(new File(file)));
             } catch(java.io.IOException ioex) {
                 throw new RuntimeException(ioex);
             }
         }
         AffineTransform trans = g.getTransform();
         g.rotate(dir, x + larg/2, y + alt/2);
-        g.drawImage(sprites.get(arquivo), (int)Math.round(x), (int)Math.round(y), (int)Math.round(x) + larg, (int)Math.round(y) + alt,
+        g.drawImage(sprites.get(file), (int)Math.round(x), (int)Math.round(y), (int)Math.round(x) + larg, (int)Math.round(y) + alt,
                     xa, ya, xa + larg, ya + alt, null);
         g.setTransform(trans);
     }

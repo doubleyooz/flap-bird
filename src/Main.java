@@ -74,7 +74,7 @@ public class Main implements Game{
     	ground_offset = ground_offset%308;
     	
     	background_offset += dt * gvx2;
-    	background_offset = background_offset%288;
+    	background_offset = background_offset%MainScreen.BG_WIDTH;
     	
     	timer_pipe.tick(dt);
     	
@@ -102,9 +102,9 @@ public class Main implements Game{
     
     public void draw(Shapes t) {
     	//background
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.GAME_WIDTH, MainScreen.GAME_HEIGHT, 0, -background_offset, 0);
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.GAME_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.GAME_WIDTH - background_offset, 0);
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.GAME_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.GAME_WIDTH * 2 - background_offset, 0);
+    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, -background_offset, 0);
+    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.BG_WIDTH - background_offset, 0);
+    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.BG_WIDTH * 2 - background_offset, 0);
     	
     	for (Pipe pipe: pipes) {
     		pipe.draw(t);
