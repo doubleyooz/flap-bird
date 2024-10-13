@@ -1,16 +1,16 @@
 package utils;
-import interfaces.Action;
+import interfaces.Callable;
 
 public class Timer {
     double time;
     double limit;
-    Action acao;
+    Callable callback;
     boolean repeat;
     boolean end;
     
-    public Timer(double limit, boolean repeat, Action acao) {
+    public Timer(double limit, boolean repeat, Callable callback) {
         this.limit = limit;
-        this.acao = acao;
+        this.callback = callback;
         this.repeat = repeat;
     }
 
@@ -19,7 +19,7 @@ public class Timer {
         time += dt;
         if(time <= limit) return;
    
-        acao.run();
+        callback.run();
         if(repeat) {
             time -= limit;
         } else {

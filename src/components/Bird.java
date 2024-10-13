@@ -4,6 +4,7 @@ import utils.Shapes;
 
 public class Bird {
 
+	public double initX, initY;
 	public double x, y;
 	public double vy = 0;
 	
@@ -16,15 +17,19 @@ public class Bird {
 	public Hitbox box;
 	
 	public Bird(double x, double y) {
-		this.x = x;
-		this.y = y;
-		this.box = new Hitbox(x, y, x + BIRD_WIDTH, y + BIRD_HEIGHT);
+		this.initX = x;
+		this.initY = y;
+		startPosition();
 	}
 	
 	public void update(double dt) {
 		vy += G * dt;
 		y += vy * dt;
 		box.move(0, vy * dt);
+	}
+
+	public void startPosition() {
+		this.box =  new Hitbox(this.initX, this.initY, x + BIRD_WIDTH, this.initY + BIRD_HEIGHT);
 	}
 	
 	public void flap() {

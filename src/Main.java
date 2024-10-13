@@ -1,6 +1,6 @@
 import constants.Image;
 import constants.MainScreen;
-import interfaces.Action;
+import interfaces.Callable;
 import interfaces.Game;
 import utils.Shapes;
 import utils.Timer;
@@ -47,22 +47,29 @@ public class Main implements Game{
 
 	public Main() {
 		bird = new Bird(35, (MainScreen.GAME_WIDTH - GAP) / 1.5);
-		timer_pipe = new Timer(3, true, addPipe()); // gera o pipes na ela
-		
-	}
-	
-	private Action addPipe() {
-		return new Action() {
-
+		timer_pipe = new Timer(3, true, new Callable() {
 			public void run() {
 				pipes.add(new Pipe(MainScreen.GAME_HEIGHT, gerador.nextInt(MainScreen.GAME_HEIGHT - GAP  - Pipe.HOLESIZE), -gvx));
 			}
-		};
+		});
+		
+	}
+
+
+	public void reset() {
+		if(!gameover) return;
+		gameover = false;
+		bird.startPosition();
+		ground_offset = 0;
+		background_offset = 0;
 	}
 	
     public void key(String key) {
-    	if (key.equals(" "))
+		if(gameover) {
+			if(key.equals("r")) reset();
+		} else if (key.equals(" "))
     			bird.flap();
+
     }
 
     public void tick(java.util.Set<String> keys, double dt) {
@@ -79,9 +86,22 @@ public class Main implements Game{
     	bird.update(dt);
     	for (Pipe pipe: pipes) {
     		pipe.update(dt);
-    		if (bird.box.intersecao(pipe.boxcima) != 0 || bird.box.intersecao(pipe.boxbaixo) != 0) {
+		
+
+			System.out.println("Upper pipe");
+			if(bird.box.intersection(pipe.upper))
+			{	
+				
+				System.out.println(MainScreen.GAME_OVER);
+				gameover = true;
+				return;
+			}
+			System.out.println("Lower pipe");
+    		if (bird.box.intersection(pipe.lower)) {
+			
     			System.out.println(MainScreen.GAME_OVER);
 				gameover = true;
+				return;
     			//gameover
     		}
     	}

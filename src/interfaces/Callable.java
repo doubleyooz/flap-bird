@@ -1,4 +1,4 @@
 package interfaces;
-public interface Action {
+public interface Callable {
     void run();
 }
