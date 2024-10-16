@@ -24,7 +24,8 @@ public class Shapes {
         g.setColor(Color.white);
     }
 
-    public void triangulo(int x1, int y1,
+
+    public void triangle(int x1, int y1,
             int x2, int y2, int x3, int y3, Colour cor) {
         g.setColor(new Color(cor.r, cor.g, cor.b));
         g.fillPolygon(new int[] { x1, x2, x3 },
@@ -32,9 +33,9 @@ public class Shapes {
                 3);
     }
 
-    public void triangulo(double x1, double y1,
+    public void triangle(double x1, double y1,
             double x2, double y2, double x3, double y3, Colour cor) {
-        triangulo((int) Math.round(x1),
+        triangle((int) Math.round(x1),
                 (int) Math.round(y1),
                 (int) Math.round(x2),
                 (int) Math.round(y2),
@@ -53,23 +54,23 @@ public class Shapes {
                 raio, cor);
     }
 
-    public void quadrado(int x, int y, int lado, Colour cor) {
+    public void square(int x, int y, int lado, Colour cor) {
         g.setColor(new Color(cor.r, cor.g, cor.b));
         g.fillRect(x, y, lado, lado);
     }
 
-    public void quadrado(double x, double y, int lado, Colour cor) {
-        quadrado((int) Math.round(x), (int) Math.round(y),
+    public void square(double x, double y, int lado, Colour cor) {
+        square((int) Math.round(x), (int) Math.round(y),
                 lado, cor);
     }
 
-    public void retangulo(int x, int y, int largura, int altura, Colour cor) {
+    public void rectangle(int x, int y, int largura, int altura, Colour cor) {
         g.setColor(new Color(cor.r, cor.g, cor.b));
         g.fillRect(x, y, largura, altura);
     }
 
-    public void retangulo(double x, double y, int largura, int altura, Colour cor) {
-        retangulo((int) Math.round(x), (int) Math.round(y),
+    public void rectangle(double x, double y, int largura, int altura, Colour cor) {
+        rectangle((int) Math.round(x), (int) Math.round(y),
                 largura, altura, cor);
     }
 

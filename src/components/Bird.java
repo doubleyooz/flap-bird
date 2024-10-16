@@ -30,6 +30,8 @@ public class Bird {
 
 	public void startPosition() {
 		this.box =  new Hitbox(this.initX, this.initY, x + BIRD_WIDTH, this.initY + BIRD_HEIGHT);
+		this.x = this.initX;
+		this.y = this.initY;
 	}
 	
 	public void flap() {

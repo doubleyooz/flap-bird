@@ -1,6 +1,7 @@
 package components;
 
 import constants.Image;
+import constants.MainScreen;
 import utils.Shapes;
 
 public class Pipe {
@@ -18,9 +19,10 @@ public class Pipe {
 		this.y = y;
 		this.speed = vx;
 
-		this.upper = new Hitbox(x, y - 540, x + this.WIDTH, y);
-		this.lower = new Hitbox(x, y + Pipe.HOLESIZE, x + 34, y + 360);
-
+		// this.upper = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH,
+		// MainScreen.GAME_HEIGHT);
+		this.lower = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH, MainScreen.GAME_HEIGHT - 112);
+		this.upper = new Hitbox(x, 0, x + this.WIDTH, y);
 	}
 
 	public void update(double dt) {
@@ -31,9 +33,12 @@ public class Pipe {
 
 	public void draw(Shapes t) {
 		// upper pipe
-		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 270, 0, this.x, this.y - 270); //
-		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 135, 0, this.x, this.y - 405); // 2
-		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 135, 0, this.x, this.y - 540); // 3
+		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 270, 0, this.x, this.y -
+				270); //
+		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 135, 0, this.x, this.y -
+				405); // 2
+		t.image(Image.FLAPPY, this.UPPER_X, 0, this.WIDTH, 135, 0, this.x, this.y -
+				540); // 3
 
 		// lower pipe
 		t.image(Image.FLAPPY, this.LOWER_X, 0, this.WIDTH, 242, 0, this.x, this.y + Pipe.HOLESIZE);

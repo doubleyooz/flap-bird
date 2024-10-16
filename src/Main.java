@@ -11,15 +11,14 @@ import java.util.Random;
 import components.Bird;
 import components.Pipe;
 
-public class Main implements Game{
-	
-		
+public class Main implements Game {
+
 	public double ground_offset = 0;
-	public double gvx = 50;//velocidade do chão
-	
+	public double gvx = 50;// velocidade do chão
+
 	public double background_offset = 0;
-	public double gvx2 = 15; //velocidade do fudno
-	
+	public double gvx2 = 15; // velocidade do fudno
+
 	private final int GAP = 112;
 	private boolean gameover = false;
 
@@ -27,11 +26,9 @@ public class Main implements Game{
 	public ArrayList<Pipe> pipes = new ArrayList<Pipe>();
 	public Random gerador = new Random();
 	public Timer timer_pipe;
-	
 
 	private int width = MainScreen.GAME_WIDTH;
 	private int height = MainScreen.GAME_HEIGHT;
-
 
 	public int getWidth() {
 		return width;
@@ -41,7 +38,7 @@ public class Main implements Game{
 		return height;
 	}
 
-	public String getTitle(){
+	public String getTitle() {
 		return MainScreen.GAME_TITLE;
 	}
 
@@ -49,95 +46,97 @@ public class Main implements Game{
 		bird = new Bird(35, (MainScreen.GAME_WIDTH - GAP) / 1.5);
 		timer_pipe = new Timer(3, true, new Callable() {
 			public void run() {
-				pipes.add(new Pipe(MainScreen.GAME_HEIGHT, gerador.nextInt(MainScreen.GAME_HEIGHT - GAP  - Pipe.HOLESIZE), -gvx));
+
+				pipes.add(new Pipe(MainScreen.GAME_HEIGHT,
+						gerador.nextInt(MainScreen.GAME_HEIGHT - GAP - Pipe.HOLESIZE), -gvx));
 			}
 		});
-		
+
 	}
 
-
 	public void reset() {
-		if(!gameover) return;
+		if (!gameover)
+			return;
 		gameover = false;
+		pipes.clear();
 		bird.startPosition();
 		ground_offset = 0;
 		background_offset = 0;
 	}
-	
-    public void key(String key) {
-		if(gameover) {
-			if(key.equals("r")) reset();
+
+	public void key(String key) {
+		if (gameover) {
+			if (key.equals("r"))
+				reset();
 		} else if (key.equals(" "))
-    			bird.flap();
+			bird.flap();
 
-    }
+	}
 
-    public void tick(java.util.Set<String> keys, double dt) {
-		if(gameover) return;
-    	ground_offset += dt * gvx;
-    	ground_offset = ground_offset%MainScreen.GROUND_WIDTH;
-    	
-    	background_offset += dt * gvx2;
-    	background_offset = background_offset%MainScreen.BG_WIDTH;
-    	
-    	timer_pipe.tick(dt);
-    	
-		
-    	bird.update(dt);
-    	for (Pipe pipe: pipes) {
-    		pipe.update(dt);
-		
+	public void tick(java.util.Set<String> keys, double dt) {
+		if (gameover)
+			return;
+		ground_offset += dt * gvx;
+		ground_offset = ground_offset % MainScreen.GROUND_WIDTH;
 
-			System.out.println("Upper pipe");
-			if(bird.box.intersection(pipe.upper))
-			{	
-				
+		background_offset += dt * gvx2;
+		background_offset = background_offset % MainScreen.BG_WIDTH;
+
+		timer_pipe.tick(dt);
+
+		bird.update(dt);
+		for (Pipe pipe : pipes) {
+			pipe.update(dt);
+
+			if (bird.box.intersection(pipe.upper)) {
+
 				System.out.println(MainScreen.GAME_OVER);
 				gameover = true;
 				return;
 			}
-			System.out.println("Lower pipe");
-    		if (bird.box.intersection(pipe.lower)) {
-			
-    			System.out.println(MainScreen.GAME_OVER);
+			if (bird.box.intersection(pipe.lower)) {
+
+				System.out.println(MainScreen.GAME_OVER);
 				gameover = true;
 				return;
-    			//gameover
-    		}
-    	}
-    	
-    	if (pipes.size() > 0 && pipes.get(0).x < -60) {
-    		pipes.remove(0);
-    		
-    	}
-    	if (bird.y + 24 >= MainScreen.GAME_HEIGHT - GAP || bird.y <= 0 ) {
-    		System.out.println(MainScreen.GAME_OVER);
+				// gameover
+			}
+		}
+
+		if (pipes.size() > 0 && pipes.get(0).x < -60) {
+			pipes.remove(0);
+
+		}
+		if (bird.y + 24 >= MainScreen.GAME_HEIGHT - GAP || bird.y <= 0) {
+			System.out.println(MainScreen.GAME_OVER);
 			gameover = true;
-    	}
-  
-    		
-    }
-    
-    public void draw(Shapes t) {
-    	//background
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, -background_offset, 0);
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.BG_WIDTH - background_offset, 0);
-    	t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, MainScreen.BG_WIDTH * 2 - background_offset, 0);
-    	
-    	for (Pipe pipe: pipes) {
-    		pipe.draw(t);
-    	}
-    	
-    	//ground
-    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, -ground_offset, MainScreen.GAME_HEIGHT - GAP);
-    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH - ground_offset, MainScreen.GAME_HEIGHT - GAP);
-    	t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH * 2 - ground_offset, MainScreen.GAME_HEIGHT - GAP);
-    	
-    	
-    	bird.draw(t);
-    }
-	
-	public static void main(String[]args) {
-		new Motor (new Main());
+		}
+
+	}
+
+	public void draw(Shapes t) {
+		// background
+		t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0, -background_offset, 0);
+		t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0,
+				MainScreen.BG_WIDTH - background_offset, 0);
+		t.image(Image.FLAPPY, 0, 0, MainScreen.BG_WIDTH, MainScreen.GAME_HEIGHT, 0,
+				MainScreen.BG_WIDTH * 2 - background_offset, 0);
+
+		for (Pipe pipe : pipes) {
+			pipe.draw(t);
+		}
+
+		// ground
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, -ground_offset, MainScreen.GAME_HEIGHT - GAP);
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH - ground_offset,
+				MainScreen.GAME_HEIGHT - GAP);
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH * 2 - ground_offset,
+				MainScreen.GAME_HEIGHT - GAP);
+
+		bird.draw(t);
+	}
+
+	public static void main(String[] args) {
+		new Motor(new Main());
 	}
 }
