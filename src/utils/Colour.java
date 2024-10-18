@@ -13,7 +13,7 @@ public class Colour
     private static HashMap<Integer, Colour> colours = new HashMap<Integer, Colour>();
     
     /*
-     * Cria uma cor dados os componentes entre 0 e 255
+     * Cria uma colour dados os componentes entre 0 e 255
      */
     private Colour(int r, int g, int b) {
         this.r = r;
@@ -22,7 +22,7 @@ public class Colour
     }
     
     /*
-     * Cria uma cor dados os componentes entre 0 e 1
+     * Cria uma colour dados os componentes entre 0 e 1
      */
     public static Colour rgb(double r, double g, double b) {
         return Colour.rgb((int)(r*255), (int)(g*255), (int)(b*255));

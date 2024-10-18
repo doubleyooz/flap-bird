@@ -11,6 +11,7 @@ public class Pipe {
 	private final int LOWER_X = 660;
 	private final int WIDTH = 52;
 	public static int HOLESIZE = 90;
+
 	public Hitbox upper;
 	public Hitbox lower;
 
@@ -19,9 +20,12 @@ public class Pipe {
 		this.y = y;
 		this.speed = vx;
 
-		// this.upper = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH,
-		// MainScreen.GAME_HEIGHT);
-		this.lower = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH, MainScreen.GAME_HEIGHT - 112);
+		System.out.printf("Upper: %.2f / %d / %.2f / %.2f\n", x, 0, x + this.WIDTH, y);
+		System.out.printf("Lower: %.2f / %.2f / %.2f / %d\n\n", x, y + Pipe.HOLESIZE, x + this.WIDTH, MainScreen.GROUND_HEIGHT
+		);
+
+		// this.upper = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH, MainScreen.GROUND_HEIGHT);
+		this.lower = new Hitbox(x, y + Pipe.HOLESIZE, x + this.WIDTH, MainScreen.GROUND_HEIGHT);
 		this.upper = new Hitbox(x, 0, x + this.WIDTH, y);
 	}
 

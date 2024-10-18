@@ -6,7 +6,7 @@ public class Bird {
 
 	public double initX, initY;
 	public double x, y;
-	public double vy = 0;
+	private double vy = 0;
 	
 	public static double G = 800; //gravity
 	public static double FLAP = -250;
@@ -22,23 +22,25 @@ public class Bird {
 		startPosition();
 	}
 	
+
 	public void update(double dt) {
-		vy += G * dt;
-		y += vy * dt;
-		box.move(0, vy * dt);
+		this.vy += G * dt;
+		y += this.vy * dt;
+		box.move(0, this.vy * dt);
 	}
 
 	public void startPosition() {
 		this.box =  new Hitbox(this.initX, this.initY, x + BIRD_WIDTH, this.initY + BIRD_HEIGHT);
 		this.x = this.initX;
 		this.y = this.initY;
+		this.vy = 0;
 	}
 	
 	public void flap() {
-		vy = FLAP;
+		this.vy = FLAP;
 	}
 	public void draw(Shapes t) {
-		t.image(Image.FLAPPY, 528, 128, BIRD_WIDTH, BIRD_HEIGHT, Math.atan(vy/300), x, y);
+		t.image(Image.FLAPPY, 528, 128, BIRD_WIDTH, BIRD_HEIGHT, Math.atan(this.vy/300), this.x, this.y);
 	}
 
 }

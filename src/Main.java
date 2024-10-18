@@ -19,7 +19,6 @@ public class Main implements Game {
 	public double background_offset = 0;
 	public double gvx2 = 15; // velocidade do fudno
 
-	private final int GAP = 112;
 	private boolean gameover = false;
 
 	public Bird bird;
@@ -43,18 +42,23 @@ public class Main implements Game {
 	}
 
 	public Main() {
-		bird = new Bird(35, (MainScreen.GAME_WIDTH - GAP) / 1.5);
+		bird = new Bird(35, (MainScreen.GAME_WIDTH - MainScreen.GAP) / 1.5);
 		timer_pipe = new Timer(3, true, new Callable() {
 			public void run() {
 
-				pipes.add(new Pipe(MainScreen.GAME_HEIGHT,
-						gerador.nextInt(MainScreen.GAME_HEIGHT - GAP - Pipe.HOLESIZE), -gvx));
+				pipes.add(new Pipe(gerador.nextInt(Pipe.HOLESIZE) + MainScreen.GAME_WIDTH,
+						gerador.nextInt(MainScreen.GROUND_HEIGHT - Pipe.HOLESIZE), -gvx));
 			}
 		});
 
 	}
 
-	public void reset() {
+	private void endGame() {
+		System.out.println(MainScreen.GAME_OVER);
+		gameover = true;
+	}
+
+	private void reset() {
 		if (!gameover)
 			return;
 		gameover = false;
@@ -68,7 +72,9 @@ public class Main implements Game {
 		if (gameover) {
 			if (key.equals("r"))
 				reset();
-		} else if (key.equals(" "))
+			return;
+		}
+		if (key.equals(" "))
 			bird.flap();
 
 	}
@@ -88,18 +94,9 @@ public class Main implements Game {
 		for (Pipe pipe : pipes) {
 			pipe.update(dt);
 
-			if (bird.box.intersection(pipe.upper)) {
-
-				System.out.println(MainScreen.GAME_OVER);
-				gameover = true;
+			if (bird.box.intersection(pipe.upper) || bird.box.intersection(pipe.lower)) {
+				endGame();
 				return;
-			}
-			if (bird.box.intersection(pipe.lower)) {
-
-				System.out.println(MainScreen.GAME_OVER);
-				gameover = true;
-				return;
-				// gameover
 			}
 		}
 
@@ -107,7 +104,7 @@ public class Main implements Game {
 			pipes.remove(0);
 
 		}
-		if (bird.y + 24 >= MainScreen.GAME_HEIGHT - GAP || bird.y <= 0) {
+		if (bird.y + 24 >= MainScreen.GROUND_HEIGHT || bird.y <= 0) {
 			System.out.println(MainScreen.GAME_OVER);
 			gameover = true;
 		}
@@ -127,11 +124,14 @@ public class Main implements Game {
 		}
 
 		// ground
-		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, -ground_offset, MainScreen.GAME_HEIGHT - GAP);
-		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH - ground_offset,
-				MainScreen.GAME_HEIGHT - GAP);
-		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, GAP, 0, MainScreen.GROUND_WIDTH * 2 - ground_offset,
-				MainScreen.GAME_HEIGHT - GAP);
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, MainScreen.GAP, 0, -ground_offset,
+				MainScreen.GROUND_HEIGHT);
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, MainScreen.GAP, 0,
+				MainScreen.GROUND_WIDTH - ground_offset,
+				MainScreen.GROUND_HEIGHT);
+		t.image(Image.FLAPPY, 292, 0, MainScreen.GROUND_WIDTH, MainScreen.GAP, 0,
+				MainScreen.GROUND_WIDTH * 2 - ground_offset,
+				MainScreen.GROUND_HEIGHT);
 
 		bird.draw(t);
 	}
