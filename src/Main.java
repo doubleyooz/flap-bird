@@ -94,7 +94,7 @@ public class Main implements Game {
 		for (Pipe pipe : pipes) {
 			pipe.update(dt);
 
-			if (bird.box.intersection(pipe.upper) || bird.box.intersection(pipe.lower)) {
+			if (bird.box.intersect(pipe.upper) || bird.box.intersect(pipe.lower)) {
 				endGame();
 				return;
 			}

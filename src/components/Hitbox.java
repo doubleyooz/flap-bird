@@ -1,38 +1,59 @@
 package components;
 
+import java.util.ArrayList;
+
+
+import utils.Point;
+import utils.Polygon;
+
 public class Hitbox {
 
-    private double x1 = Double.NEGATIVE_INFINITY, y1 = Double.NEGATIVE_INFINITY, x2 = Double.NEGATIVE_INFINITY,
-            y2 = Double.NEGATIVE_INFINITY;
+    private ArrayList<Point> points = new ArrayList<Point>();
+    private Polygon border;
 
-    public double[] getCoordinates() {
-        return new double[] { x1, y1, x2, y2 };
+    public Point[] getCoordinates() {
+        return (Point[]) points.toArray();
+    }
+
+    public Hitbox(Point p1, Point p2, Point p3, Point p4) {
+        this.border = new Polygon(p1, p2, p3, p4);
+
     }
 
     public Hitbox(double x1, double y1, double x2, double y2) {
-        this.move(x1, y1, x2, y2);
+        this.points.add(new Point(x1, y1));
+        this.points.add(new Point(x1, y2));
+        this.points.add(new Point(x2, y1));
+        this.points.add(new Point(x2, y2));
+
+        this.border = new Polygon(points.get(0), points.get(1), points.get(2), points.get(3));
     }
 
-    public void move(double x1, double y1, double x2, double y2) {
-        this.x1 = Math.min(x1, x2);
-        this.x2 = Math.max(x1, x2);
-        this.y1 = Math.min(y1, y2);
-        this.y2 = Math.max(y1, y2);
+    public void move(Point p1, Point p2, Point p3, Point p4) {
+        this.points.clear();
+        this.points.add(p1);
+        this.points.add(p2);
+        this.points.add(p3);
+        this.points.add(p4);
+        this.border = new Polygon(this.points.get(0), this.points.get(1), this.points.get(2), this.points.get(3));
     }
+    
 
     public void move(double dx, double dy) {
-        this.x1 += dx;
-        this.x2 += dx;
-        this.y1 += dy;
-        this.y2 += dy;
-    }
-
-    // Returns true if two hitboxes intersect
-    public boolean intersection(Hitbox hb) {
-
-        return (this.x1 < hb.x2 && this.x2 > hb.x1 &&
-                this.y1 < hb.y2 && this.y2 > hb.y1);
+        for (Point p : this.points) {
+            p.x += dx;
+            p.y += dy;
+        }
 
     }
 
+    public void move(double dx, double dy, double radius) {
+        this.move(dx, dy);
+        this.border.radius = radius;
+
+    }
+
+    public boolean intersect(Hitbox other) {
+        return this.border.intersect(other.border);
+    }
 }

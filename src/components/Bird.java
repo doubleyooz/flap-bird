@@ -26,7 +26,7 @@ public class Bird {
 	public void update(double dt) {
 		this.vy += G * dt;
 		y += this.vy * dt;
-		box.move(0, this.vy * dt);
+		box.move(0, this.vy * dt, Math.atan(this.vy/300));
 	}
 
 	public void startPosition() {
