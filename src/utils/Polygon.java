@@ -53,6 +53,22 @@ public class Polygon {
         lines.add(new Line(p3, p1));
     }
 
+    public Polygon(Point p1, Point p2, Point p3, Point p4, double radius) {
+
+        lines.add(new Line(p1, p2));
+        lines.add(new Line(p2, p3));
+        lines.add(new Line(p3, p4));
+        lines.add(new Line(p4, p1));
+        this.radius = radius;
+    }
+
+    public Polygon(Point p1, Point p2, Point p3, double radius) {
+        lines.add(new Line(p1, p2));
+        lines.add(new Line(p2, p3));
+        lines.add(new Line(p3, p1));
+        this.radius = radius;
+    }
+
     // Returns true if two hitboxes intersect
     public boolean intersect(Polygon other) {
         for (Line line : lines) {

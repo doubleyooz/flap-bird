@@ -29,12 +29,20 @@ public class Hitbox {
         this.border = new Polygon(points.get(0), points.get(1), points.get(2), points.get(3));
     }
 
+    private Point rotatePoint(Point p) {
+        if(this.border.radius == 0) return p;
+        double angle = Math.toRadians(this.border.radius);
+        double newX = p.x * Math.cos(angle) - p.y * Math.sin(angle);
+        double newY = p.x * Math.sin(angle) + p.y * Math.cos(angle);
+        return new Point(newX, newY);
+    }
+
     public void move(Point p1, Point p2, Point p3, Point p4) {
         this.points.clear();
-        this.points.add(p1);
-        this.points.add(p2);
-        this.points.add(p3);
-        this.points.add(p4);
+        this.points.add(rotatePoint(p1));
+        this.points.add(rotatePoint(p2));
+        this.points.add(rotatePoint(p3));
+        this.points.add(rotatePoint(p4));
         this.border = new Polygon(this.points.get(0), this.points.get(1), this.points.get(2), this.points.get(3));
     }
     
@@ -48,9 +56,9 @@ public class Hitbox {
     }
 
     public void move(double dx, double dy, double radius) {
-        this.move(dx, dy);
         this.border.radius = radius;
-
+        this.move(dx, dy);
+   
     }
 
     public boolean intersect(Hitbox other) {
